@@ -13,33 +13,34 @@ Follow these steps to run the project locally on your machine:
    ```bash
    pip install -r requirements.txt
    ```
+3.  Go into api.py and change enter admin email information for email reminder features
 
-3. Open three new terminals.
+4. Open three new terminals.
 
-4. In the first terminal, start the Flask application:
+5. In the first terminal, start the Flask application:
 
    ```bash
    python api.py
    ```
 
-5. In the second terminal, start the Celery Beat scheduler:
+6. In the second terminal, start the Celery Beat scheduler:
 
    ```bash
    celery -A api.celery beat
    ```
 
-6. In the third terminal, start the Celery worker:
+7. In the third terminal, start the Celery worker:
 
    ```bash
    celery -A api.celery worker
    ```
 
-7. In the third terminal, start the Redis server:
+8. In the third terminal, start the Redis server:
 
    ```bash
    redis-server
    ```
 
-8. Open a web browser and go to [http://127.0.0.1:5000/login.html](http://127.0.0.1:5000/login.html) to access the application.
+9. Open a web browser and go to [http://127.0.0.1:5000/login.html](http://127.0.0.1:5000/login.html) to access the application.
 
 Now you should be able to interact with the Show and Venue Management System through the provided web interface. Enjoy managing shows and venues!
