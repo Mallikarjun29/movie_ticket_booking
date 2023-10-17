@@ -1,0 +1,258 @@
+swagger: '2.0'
+info:
+  version: '1.0.0'
+  title: Entertainment System APIs
+  description: APIs for managing shows, bookings, and users in the entertainment system.
+paths:
+  /api/movies:
+    get:
+      summary: Get movies
+      description: Retrieve a list of movies.
+      responses:
+        200:
+          description: List of movies
+        
+  /api/venues:
+    get:
+      summary: Get venues
+      description: Retrieve a list of venues.
+      responses:
+        200:
+          description: List of venues
+          
+    post:
+      summary: Add a venue
+      description: Add a new venue to the system.
+      parameters:
+        - name: body
+          in: body
+          description: Venue data
+          required: true
+          schema:
+            type: object
+            properties:
+              venue:
+                type: string
+              location:
+                type: string
+      responses:
+        200:
+          description: Venue added successfully
+
+  /api/shows:
+    post:
+      summary: Add a show
+      description: Add a new show to the system.
+      parameters:
+        - name: body
+          in: body
+          description: Show data
+          required: true
+          schema:
+            type: object
+            properties:
+              show:
+                type: string
+              venue_id:
+                type: integer
+              date:
+                type: string
+              time:
+                type: string
+              capacity:
+                type: integer
+              price:
+                type: number
+              genre:
+                type: string
+              rating:
+                type: integer
+      responses:
+        200:
+          description: Show added successfully
+
+  /api/venues/{venue_id}:
+    delete:
+      summary: Delete a venue
+      description: Delete a venue from the system.
+      parameters:
+        - name: venue_id
+          in: path
+          description: ID of the venue
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Venue deleted successfully
+
+    put:
+      summary: Update a venue
+      description: Update an existing venue in the system.
+      parameters:
+        - name: venue_id
+          in: path
+          description: ID of the venue
+          required: true
+          type: integer
+        - name: body
+          in: body
+          description: Venue data
+          required: true
+          schema:
+            type: object
+            properties:
+              venue:
+                type: string
+              location:
+                type: string
+      responses:
+        200:
+          description: Venue updated successfully
+
+  /api/shows/{show_id}:
+    delete:
+      summary: Delete a show
+      description: Delete a show from the system.
+      parameters:
+        - name: show_id
+          in: path
+          description: ID of the show
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Show deleted successfully
+
+    put:
+      summary: Update a show
+      description: Update an existing show in the system.
+      parameters:
+        - name: show_id
+          in: path
+          description: ID of the show
+          required: true
+          type: integer
+        - name: body
+          in: body
+          description: Show data
+          required: true
+          schema:
+            type: object
+            properties:
+              show:
+                type: string
+              date:
+                type: string
+              time:
+                type: string
+              capacity:
+                type: integer
+              price:
+                type: number
+              genre:
+                type: string
+              rating:
+                type: integer
+      responses:
+        200:
+          description: Show updated successfully
+
+  /api/login:
+    post:
+      summary: User login
+      description: Authenticate user and provide an access token.
+      parameters:
+        - name: body
+          in: body
+          description: User credentials
+          required: true
+          schema:
+            type: object
+            properties:
+              username:
+                type: string
+              password:
+                type: string
+      responses:
+        200:
+          description: Access token provided
+
+  /api/bookings:
+    post:
+      summary: Add a booking
+      description: Add a new booking to the system.
+      parameters:
+        - name: body
+          in: body
+          description: Booking data
+          required: true
+          schema:
+            type: object
+            properties:
+              show_id:
+                type: integer
+              num_tickets:
+                type: integer
+      responses:
+        200:
+          description: Booking added successfully
+
+  /api/all_bookings:
+    get:
+      summary: Get all bookings
+      description: Retrieve all bookings of the authenticated user.
+      responses:
+        200:
+          description: List of bookings
+
+  /api/send_daily_reminder:
+    get:
+      summary: Send daily reminder
+      description: Trigger a task to send daily reminders to users.
+      responses:
+        200:
+          description: Daily reminder task triggered
+
+  /api/send_monthly:
+    get:
+      summary: Send monthly report
+      description: Trigger a task to send monthly reports to users.
+      responses:
+        200:
+          description: Monthly report task triggered
+
+  /api/register:
+    post:
+      summary: User registration
+      description: Register a new user in the system.
+      parameters:
+        - name: body
+          in: body
+          description: User registration data
+          required: true
+          schema:
+            type: object
+            properties:
+              username:
+                type: string
+              password:
+                type: string
+              email:
+                type: string
+      responses:
+        200:
+          description: User registered successfully
+
+  /api/export/{venue_id}:
+    get:
+      summary: Export CSV
+      description: Trigger a task to generate and export a CSV file for a venue.
+      parameters:
+        - name: venue_id
+          in: path
+          description: ID of the venue
+          required: true
+          type: integer
+      responses:
+        200:
+          description: CSV generation initiated
