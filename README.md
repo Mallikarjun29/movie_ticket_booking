@@ -13,8 +13,12 @@ Follow these steps to run the project locally on your machine:
    ```bash
    pip install -r requirements.txt
    ```
-3.  Go into api.py and change enter admin email information for email reminder features
+3.  Go into api.py and enter admin email information for email reminder features
 
+```python
+email_sender = "admin email"
+email_password = "your_password"
+```
 4. Open three new terminals.
 
 5. In the first terminal, start the Flask application:
