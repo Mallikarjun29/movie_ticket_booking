@@ -48,3 +48,7 @@ email_password = "your_password"
 9. Open a web browser and go to [http://127.0.0.1:5000/login.html](http://127.0.0.1:5000/login.html) to access the application.
 
 Now you should be able to interact with the Show and Venue Management System through the provided web interface. Enjoy managing shows and venues!
+
+![alt text]([http://url/to/img.png](https://github.com/Mallikarjun29/movie_ticket_booking/blob/main/Screenshot%202023-10-17%20170851.png)https://github.com/Mallikarjun29/movie_ticket_booking/blob/main/Screenshot%202023-10-17%20170851.png)
+![alt text]([http://url/to/img.png](https://github.com/Mallikarjun29/movie_ticket_booking/blob/main/Screenshot%202023-10-17%20170837.png)https://github.com/Mallikarjun29/movie_ticket_booking/blob/main/Screenshot%202023-10-17%20170837.png)
+![alt text]([http://url/to/img.png](https://github.com/Mallikarjun29/movie_ticket_booking/blob/main/Screenshot%202023-10-17%20170800.png)https://github.com/Mallikarjun29/movie_ticket_booking/blob/main/Screenshot%202023-10-17%20170800.png)
