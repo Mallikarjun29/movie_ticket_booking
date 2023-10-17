@@ -5,7 +5,7 @@ Follow these steps to run the project locally on your machine:
 1. Open a terminal and navigate to the project directory:
 
    ```bash
-   cd show-venue-management
+   cd movie_ticket_booking
    ```
 
 2. Install the required Python packages using pip:
