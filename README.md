@@ -49,6 +49,6 @@ email_password = "your_password"
 
 Now you should be able to interact with the Show and Venue Management System through the provided web interface. Enjoy managing shows and venues!
 
-![alt text]([http://url/to/img.png](https://github.com/Mallikarjun29/movie_ticket_booking/blob/main/Screenshot%202023-10-17%20170851.png)https://github.com/Mallikarjun29/movie_ticket_booking/blob/main/Screenshot%202023-10-17%20170851.png)
-![alt text]([http://url/to/img.png](https://github.com/Mallikarjun29/movie_ticket_booking/blob/main/Screenshot%202023-10-17%20170837.png)https://github.com/Mallikarjun29/movie_ticket_booking/blob/main/Screenshot%202023-10-17%20170837.png)
-![alt text]([http://url/to/img.png](https://github.com/Mallikarjun29/movie_ticket_booking/blob/main/Screenshot%202023-10-17%20170800.png)https://github.com/Mallikarjun29/movie_ticket_booking/blob/main/Screenshot%202023-10-17%20170800.png)
+![Screenshot](https://github.com/Mallikarjun29/movie_ticket_booking/blob/main/Screenshot%202023-10-17%20170851.png)
+![alt text](https://github.com/Mallikarjun29/movie_ticket_booking/blob/main/Screenshot%202023-10-17%20170837.png)
+![alt text](https://github.com/Mallikarjun29/movie_ticket_booking/blob/main/Screenshot%202023-10-17%20170800.png)
