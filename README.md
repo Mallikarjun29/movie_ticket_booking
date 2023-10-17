@@ -15,7 +15,7 @@ Follow these steps to run the project locally on your machine:
    ```
 3.  Go into api.py and enter admin email information for email reminder features
 
-```python
+```
 email_sender = "admin email"
 email_password = "your_password"
 ```
