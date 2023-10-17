@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en" data-bs-theme="dark">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Theatres</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+  </head>
+    <style>
+    @media (max-width: 576px) {
+  .card-container {
+    overflow-y: auto;
+  }
+}
+
+    </style>
+  <body>
+<div id="theatre">
+          <!-- header -->
+    <header>
+        <div class="py-2 border-bottom shadow-lg p-3 bg-dark rounded">
+          <div class="container-fluid">
+                <div class="row align-items-center">
+                    <div class="col align-items-start mx-auto">
+                    <img class="float-left" src="assests/images/full_logo.png" alt="full_logo" width="150" height="25">
+                    </div>
+
+                <div class="col text-right">
+              <ul class="nav nav-pills justify-content-end">
+                    <li class="nav-item"><a href="user_theatres.html" class="nav-link active" aria-current="page">Home</a></li>
+                    <li class="nav-item"><a href="user_bookings.html" class="nav-link">Bookings</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link link-secondary" @click="logout">Logout</a></li>
+            </ul>
+                    </div>
+                    </div>
+          </div>
+        </div>
+        <div class="py-2 shadow-lg p-3 bg-dark rounded">
+          <div class="container-fluid d-flex flex-wrap justify-content-center">
+            <form class="col-12 col-lg-auto mb-2 mb-lg-0 me-lg-auto" role="search">
+              <input type="search" class="form-control" placeholder="Search..." aria-label="Search" v-model="searchQuery">
+            </form>
+              <div class="text-end d-flex">
+           <!-- Dropdown button for genre filtering -->
+                  <div class="dropdown m-1">
+                    <button type="button" class="btn btn-dark rounded dropdown-toggle" data-bs-toggle="dropdown">
+                      Genre <span class="caret"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                      <a class="dropdown-item" v-for="genre in genres" @click="selectedGenre=genre">{{ genre }}</a>
+                    </div>
+                  </div>
+                  
+                  <!-- Date picker for date filtering -->
+                  <div class="col m-1">
+                    <input type="date" class="form-control" v-model="selectedDate" >
+                  </div>
+                  
+                    <div class="col btn-group" role="group">
+                      <button class="btn btn-dark dropdown-toggle" type="button" id="locationDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Location
+                      </button>
+                      <div class="dropdown-menu" aria-labelledby="locationDropdown">
+                        <a class="dropdown-item" v-for="location in locations" :key="location" href="#" @click="selectedLocation = location">{{ location }}</a>
+                      </div>
+                    </div>
+            </div>
+            </div>
+          </div>
+      </header>
+      
+      <!-- Theaters -->
+    <div class="my-2 container-fluid border rounded shadow p-3" v-for="venue in filteredVenues()">
+          <div class="row justify-content-md-center">
+              <div class="col-1">
+                  <h4>{{ venue.venue }}</h4>
+              </div>
+              <div class="col-2">
+                  <h4> {{ venue.location }}</h4>
+              </div>
+                </div>
+                 <div class="d-flex flex-row flex-nowrap card-container">
+                     <!-- show cards -->
+                      <div class="card card-block mx-2 shadow-lg" style="min-width: 300px;" v-for="show in filterShows(venue)">
+                          <div class="text-center">
+                              <h6>{{ show.show }}</h6>
+                              <div class="d-flex">
+                              <div class="border col">
+                                <label>Ratings:</label>
+                              <h7>{{ show.ratings }}</h7>
+                              </div>
+                                  <div class="border col">
+                                <label>Genre:</label>
+                              <h7>{{ show.tags }}</h7>
+                              </div>
+                              </div>
+                              <div class="d-flex">
+                              <div class="border col">
+                                <label>Date:</label>
+                              <h7>{{ show.date }}</h7>
+                              </div>
+                              <div class="border col">
+                                <label>Time:</label>
+                              <h7>{{ show.time }}</h7>
+                              </div>
+                              </div>
+                              
+                              <div class="d-flex">
+                              <div class="border col">
+                                <label>Capacity:</label>
+                              <h7>{{ show.capacity }}</h7>
+                              </div>
+                              <div class="border col">
+                                <label>Seats Remaining:</label>
+                              <h7>{{ show.capacity - show.total_booking }}</h7>
+                              </div>
+                              </div>
+                            </div>
+                          <div class="text-center">
+                              <div class="container">
+                                    <div class="dropdown">
+                                        <button type="button" 
+                                                class="btn btn-danger"
+                                                data-bs-toggle="dropdown">
+                                             Book <span class="caret"></span>
+                                        </button>
+                                        <div class="dropdown-menu col-md-6">
+                                            <form class="m-3">
+                                                <div class="form-group m-1">
+                                                    <input type="number" class="form-control" 
+                                                           id="fm2" placeholder="Tickets" required v-model="selectedTickets">
+                                                </div>
+                                                <div class="form-group py-2">
+                                                    <h3> Price : {{ show.price }}</h3>
+                                                    <button type="submit" class="btn btn-danger" @click="confirmBooking(show.id)">
+                                                        Submit
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                          </div>
+                     </div>   
+                </div>
+        </div>  
+    </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    <script src="theatre.js"></script>
+    </body>
+</html>

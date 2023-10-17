@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en" data-bs-theme="dark">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Venue</title>
+      <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    </head>
+<style>
+    @media (max-width: 576px) {
+  .card-container {
+    overflow-y: auto;
+  }
+}
+
+    </style>
+  <body>
+      <!-- header -->
+      <div id="venue">
+    <header>
+        <div class="py-2 border-bottom shadow-lg p-3 bg-dark rounded">
+          <div class="container-fluid">
+                <div class="row align-items-center">
+                    <div class="col align-items-start mx-auto">
+                    <img class="float-left" src="assests/images/full_logo.png" alt="full_logo" width="150" height="25">
+                    </div>
+
+                <div class="col text-right">
+              <ul class="nav nav-pills justify-content-end">
+                
+                    <li class="nav-item"><a href="#" class="nav-link link-secondary" @click="logout">Logout</a></li>
+            </ul>
+                    </div>
+                    </div>
+          </div>
+        </div>
+        <div class="py-2 shadow-lg p-3 bg-dark rounded">
+          <div class="container-fluid d-flex flex-wrap justify-content-center">
+            <form class="col-12 col-lg-auto mb-2 mb-lg-0 me-lg-auto" role="search">
+              <input type="search" class="form-control" placeholder="Search..." aria-label="Search" v-model="searchQuery">
+            </form>
+            
+                    <!-- plus button -->
+              <div class="text-end d-flex">
+              <div class="container">
+                    <div class="dropdown">
+                        <button type="button" 
+                                class="btn btn-primary rounded"
+                                data-bs-toggle="dropdown">
+                             Add New Venue <span class="caret"></span>
+                        </button>
+                        <div class="dropdown-menu col-md-6">
+                            <form class="m-3">
+                                <div class="form-group m-1">
+                                    <input type="text" class="form-control" 
+                                           id="fm1" 
+                                           placeholder="Venue Name" 
+                                           required v-model="newVenue.name">
+                                </div>
+                                <div class="form-group m-1">
+                                    <input type="tel" class="form-control" 
+                                           id="fm2" placeholder="Location" required v-model="newVenue.location">
+                                </div>
+                                <div class="form-group py-2">
+                                    <button type="submit" class="btn btn-primary"  @click="addVenue">
+                                        Submit
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+              
+            <!-- Dropdown button for genre filtering -->
+                  <div class="dropdown m-1">
+                    <button type="button" class="btn btn-dark rounded dropdown-toggle" data-bs-toggle="dropdown">
+                      Genre <span class="caret"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                      <a class="dropdown-item" v-for="genre in genres" @click="selectedGenre=genre">{{ genre }}</a>
+                    </div>
+                  </div>
+                  
+                <div class="dropdown m-1">
+                    <button type="button" class="btn btn-dark rounded dropdown-toggle" data-bs-toggle="dropdown">
+                        Rating <span class="caret"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" v-for="ratingValue in [1, 2, 3, 4, 5]" :key="ratingValue" @click="selectedRating=ratingValue">{{ ratingValue }}</a>
+                    </div>
+                </div>
+
+                  <!-- Date picker for date filtering -->
+                  <div class="col-2 m-1">
+                    <input type="date" class="form-control" v-model="selectedDate" >
+                  </div>
+                  
+                    <div class="col btn-group" role="group">
+                      <button class="btn btn-dark dropdown-toggle" type="button" id="locationDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Location
+                      </button>
+                      <div class="dropdown-menu" aria-labelledby="locationDropdown">
+                        <a class="dropdown-item" v-for="location in locations" :key="location" href="#" @click="selectedLocation = location">{{ location }}</a>
+                      </div>
+                    </div>
+              </div>
+            </div>
+          </div>
+      </header>
+      
+      
+      <!-- Venue  -->
+      <div class="my-2 container-fluid border rounded shadow p-3" v-for="venue in filteredVenues()">
+          <div class="row justify-content-md-center">
+              <div class="col d-flex" >
+                  
+                  <h4 class="col-2">{{ venue.venue }}</h4>
+                  <div class="col-5 d-flex">
+                  <i class="bi bi-geo-alt-fill px-1"></i>
+                  <h4> {{ venue.location }} </h4>
+                  </div>
+                  
+              </div>
+              <div class="col justify-content-end align-items-center d-flex">
+                  
+
+                  
+                  <button class="btn btn-primary rounded m-1"  @click="export_csv(venue.id)">Export as csv </button>
+<!--                  edit but-->
+                    <div class="dropdown">
+                      <button type="button" class="btn btn-primary rounded" data-bs-toggle="dropdown">
+                        Edit Venue <span class="caret"></span>
+                      </button>
+                      <div class="dropdown-menu col-md-6">
+                        <form class="m-3">
+                          <div class="form-group m-1">
+                            <input type="tel" class="form-control" :id="'fm1-' + venue.id" v-model="venue.venue" paceholder="Venue Name">
+                          </div>
+                          <div class="form-group m-1">
+                            <input type="tel" class="form-control" :id="'fm2-' + venue.id" v-model="venue.location" placeholder="Location">
+                          </div>
+                          <div class="form-group py-2">
+                            <button type="submit" class="btn btn-primary" @click="updateVenue(venue.id)">
+                              Submit
+                            </button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+
+
+                  
+<!--                  add new show button-->
+                        <div class="dropdown m-1">
+                            <button type="button" 
+                                    class="btn btn-primary rounded"
+                                    data-bs-toggle="dropdown">
+                                 Add New Show <span class="caret"></span>
+                            </button>
+                            <div class="dropdown-menu col-md-6">
+                                <form class="m-3">
+                                    <div class="form-group m-1">
+                                        <input type="text" class="form-control" 
+                                               id="fm1" 
+                                               placeholder="Show Name" 
+                                               required v-model="newShow.name">
+                                    </div>
+                                    <div class="form-group m-1">
+                                        <input type="text" class="form-control" 
+                                               id="fm1" 
+                                               placeholder="Genre" 
+                                               required v-model="newShow.genre">
+                                    </div>
+                                    <div class="form-group m-1">
+                                        <input type="number" class="form-control" 
+                                               id="fm1" 
+                                               placeholder="Capacity" 
+                                               required v-model="newShow.capacity">
+                                    </div>
+                                    <div class="form-group m-1">
+                                        <input type="number" class="form-control" 
+                                               id="fm2" placeholder="Price" v-model="newShow.price">
+                                    </div>
+                                    <div class="form-group m-1">
+                                        <select class="form-control"  v-model="newShow.rating" placeholder="Rating" required>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group m-1">
+                                        <input type="date" class="form-control" 
+                                               id="fm2" placeholder="Date" v-model="newShow.date">
+                                    </div>
+                                    <div class="form-group m-1">
+                                        <input type="time" class="form-control" 
+                                               id="fm2" placeholder="Time" v-model="newShow.time">
+                                    </div>
+                                    <div class="form-group py-2">
+                                        <button type="submit" class="m-1 btn btn-primary" @click="addShow(venue.id)">
+                                            Submit
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    
+<!--                  Del but-->
+                    <button type="button" class="btn btn-danger" @click="deleteVenue(venue.id)"> Delete </button>
+              </div>
+                </div>
+          
+                 <div class="d-flex flex-row flex-nowrap card-container" style="min-width: 300px; position: relative;">
+                     <!-- show cards -->
+                     
+                      <div class="card card-block  mx-2 shadow-lg" style="min-width: 300px;" v-for="show in filterShows(venue)">
+                          
+                          <div class="text-center ">
+                              <h6>{{ show.show }}</h6>
+                              <div class="d-flex">
+                              <div class="border col">
+                                <label>Ratings:</label>
+                              <h7>{{ show.ratings }}</h7>
+                              </div>
+                                  <div class="border col">
+                                <label>Genre:</label>
+                              <h7>{{ show.tags }}</h7>
+                              </div>
+                              </div>
+                              <div class="d-flex">
+                              <div class="border col">
+                                <label>Date:</label>
+                              <h7>{{ show.date }}</h7>
+                              </div>
+                              <div class="border col">
+                                <label>Time:</label>
+                              <h7>{{ show.time }}</h7>
+                              </div>
+                              </div>
+                              
+                              <div class="d-flex">
+                              <div class="border col">
+                                <label>Capacity:</label>
+                              <h7>{{ show.capacity }}</h7>
+                              </div>
+                              <div class="border col">
+                                <label>Bookings:</label>
+                              <h7>{{ show.total_booking }}</h7>
+                              </div>
+                              </div>
+                            </div>
+                           
+                          <div class="justify-content-center d-flex ">
+                              
+<!--                              edit show button-->
+        
+                        <div class="dropdown m-1 ">
+                            <button type="button" 
+                                    class="btn btn-primary rounded"
+                                    data-bs-toggle="dropdown">
+                                 Edit Show <span class="caret"></span>
+                            </button>
+                            <div class="dropdown-menu col-md-6" style="position: absolute; top: 100%; left: 0;" >
+                                <form class="m-3">
+                                    <div class="form-group m-1 edit-but">
+                                        <label>Show name</label>
+                                        <input type="tel" class="form-control" 
+                                               :id="'sh1-' + show.id" 
+                                               placeholder="Show Name" v-model="show.show" 
+                                               required>
+                                    </div>
+                                    <div class="form-group m-1">
+                                        <label>Genre</label>
+                                        <input type="tel" class="form-control" 
+                                               :id="'sh2-' + show.id"  
+                                               placeholder="Genre" v-model="show.tags"
+                                               required>
+                                    </div>
+                                    <div class="form-group m-1">
+                                        <label>Capacity</label>
+                                        <input type="number" class="form-control" 
+                                               :id="'sh3-' + show.id" 
+                                               placeholder="Capacity" v-model="show.capacity"
+                                               required>
+                                    </div>
+                                    <div class="form-group m-1">
+                                        <label>Price</label>
+                                        <input type="number" class="form-control" 
+                                               :id="'sh4-' + show.id"
+                                               placeholder="Price" v-model="show.price"
+                                               required> 
+                                    </div>
+
+                                    <div class="form-group m-1">
+                                        <label>Rating</label>
+                                        <select class="form-control" :id="'sh7-' + show.id" v-model="show.rating" required>
+                                            <option v-for="ratingValue in [1, 2, 3, 4, 5]" :key="ratingValue" :value="ratingValue" :selected="show.rating === ratingValue">{{ ratingValue }}</option>
+                                        </select>
+                                    </div>
+
+
+
+                                    <div class="form-group m-1">
+                                        <input type="date" class="form-control" 
+                                               :id="'sh5-' + show.id" placeholder="Date" required v-model="show.date">
+                                    </div>
+                                    <div class="form-group m-1">
+                                        <input type="time" class="form-control" 
+                                               :id="'sh6-' + show.id" placeholder="Time" required v-model="show.time">
+                                    </div>
+                                    <div class="form-group py-2">
+                                        <button type="submit" class="m-1 btn btn-primary" @click="updateShow(show.id)">
+                                            Submit
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <button type="button" class="m-1 btn btn-danger" @click="deleteShow(show)"> Delete </button>
+                          </div>
+                     </div>   
+                </div>
+        </div>
+      </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    <script src="venue.js"></script>
+    </body>
+</html>
