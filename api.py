@@ -13,7 +13,7 @@ from email.message import EmailMessage
 from flask import render_template_string
 import csv
 
-email_sender = "admin_password"
+email_sender = "admin email"
 email_password = "your_password"
 
 def celery_init_app(app: Flask) -> Celery:
